@@ -1,9 +1,7 @@
 package readability;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
@@ -18,11 +16,18 @@ public class Main {
     public static int ageSimple = 0;
     public static int ageColeman = 0;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        String pathToFile = Arrays.toString(args).replaceAll("\\[", "").replaceAll("]","");
+        File file = new File(args[0]);
+        String text = null;
 
-        String text = readFileAsString(pathToFile);
+        try(Scanner scanner = new Scanner(file)) {
+            while(scanner.hasNext()) {
+                text = scanner.nextLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         String delimiter = "[.?!]";
         String[] regexArray = text.split(delimiter);
@@ -38,13 +43,13 @@ public class Main {
         totalSyllables = syllables[0];
         totalPolysyllables = syllables[1];
 
-        displayText(pathToFile, text);
+        displayText(text);
         displayScore(numberOfSentences, wordCount, charCount, totalSyllables, totalPolysyllables);
     }
 
-    protected static String readFileAsString(String fileName) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fileName)));
-    }
+    //protected static String readFileAsString(String fileName) throws IOException {
+    //  return new String(Files.readAllBytes(Paths.get(fileName)));
+    // }
 
     protected static int countWords(String[] array) {
         int wordCount = 0;
@@ -115,8 +120,7 @@ public class Main {
         return isVowel;
     }
 
-    protected static void displayText(String pathToFile, String text) {
-        System.out.printf("java Main %s\n", pathToFile);
+    protected static void displayText(String text) {
         System.out.print("The text is:\n");
         System.out.printf("%s \n\n", text);
     }
