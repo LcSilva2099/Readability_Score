@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static int totalSyllabuses;
+    public static int totalSyllables;
     public static int totalPolysyllables;
     public static double l;
     public static double s;
@@ -34,12 +34,12 @@ public class Main {
         l = (double)charCount / wordCount * 100; // char per 100 words
         s = (double)numberOfSentences / wordCount * 100; // sentences per 100 words
 
-        int[] syllabus = countSyllabus(text); // index 0 = number of syllabuses, index 1 = number of polysyllables
-        totalSyllabuses = syllabus[0];
-        totalPolysyllables = syllabus[1];
+        int[] syllables = countSyllables(text); // index 0 = number of syllables, index 1 = number of polysyllables
+        totalSyllables = syllables[0];
+        totalPolysyllables = syllables[1];
 
         displayText(pathToFile, text);
-        displayScore(numberOfSentences, wordCount, charCount, totalSyllabuses, totalPolysyllables);
+        displayScore(numberOfSentences, wordCount, charCount, totalSyllables, totalPolysyllables);
     }
 
     protected static String readFileAsString(String fileName) throws IOException {
@@ -60,9 +60,9 @@ public class Main {
         return wordCount;
     }
 
-    protected static int[] countSyllabus(String text) {
+    protected static int[] countSyllables(String text) {
         String[] array = text.replaceAll("[.?!,]", "").replaceAll("\\s+", " ").split("\\pZ");
-        int syllabusCount = 0;
+        int syllablesCount = 0;
         int polysyllables = 0;
         int wordSyllableCount;
 
@@ -74,19 +74,19 @@ public class Main {
             }
 
             if (build.length() < 4) {
-                syllabusCount++;
+                syllablesCount++;
             } else {
                 for (int j = 0; j < build.length() - 1; j++) {
                     if (isVowel(build.charAt(j)) && isVowel(build.charAt(j + 1))) {
-                        syllabusCount++;
+                        syllablesCount++;
                         wordSyllableCount++;
                         j++;
                     } else if (isVowel(build.charAt(j))) {
-                        syllabusCount++;
+                        syllablesCount++;
                         wordSyllableCount++;
                     } else if (j == build.length() - 2 && isVowel(build.charAt(j + 1))) {
                         if (build.charAt(j + 1) != 'e') {
-                            syllabusCount++;
+                            syllablesCount++;
                             wordSyllableCount++;
                         }
                     }
@@ -97,8 +97,8 @@ public class Main {
             }
         }
 
-        if (syllabusCount == 0) syllabusCount++;
-        return new int[]{syllabusCount, polysyllables};
+        if (syllablesCount == 0) syllablesCount++;
+        return new int[]{syllablesCount, polysyllables};
     }
 
     protected static boolean isVowel(char charFromWord) {
@@ -172,7 +172,7 @@ public class Main {
     }
 
     protected static void flesch(int numberOfWords, int numberOfSentences) {
-        double score = 0.39 * ((double) numberOfWords / numberOfSentences) + 11.8 * ((double)totalSyllabuses / numberOfWords) - 15.59;
+        double score = 0.39 * ((double) numberOfWords / numberOfSentences) + 11.8 * ((double) totalSyllables / numberOfWords) - 15.59;
         System.out.print("Flesch–Kincaid readability tests: " + Math.round(score * 100.0) / 100.0);
         ageFlesch = returnAgeRange(score);
         System.out.print(" (about " + ageFlesch + " year olds).\n");
