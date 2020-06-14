@@ -30,6 +30,7 @@ public class Main {
         }
 
         String delimiter = "[.?!]";
+        assert text != null;
         String[] regexArray = text.split(delimiter);
 
         int numberOfSentences = regexArray.length;
