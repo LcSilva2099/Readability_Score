@@ -48,10 +48,6 @@ public class Main {
         displayScore(numberOfSentences, wordCount, charCount, totalSyllables, totalPolysyllables);
     }
 
-    //protected static String readFileAsString(String fileName) throws IOException {
-    //  return new String(Files.readAllBytes(Paths.get(fileName)));
-    // }
-
     protected static int countWords(String[] array) {
         int wordCount = 0;
 
